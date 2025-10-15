@@ -11,12 +11,17 @@ function UserList({users, onUserClick}) {
 
         )}
          return (
-            <row>
-                user.map function inside the row tag
-                {users.map(user => (<col className=" md={6} lg={4} mb-4"><UserCard user={user} onUserClick={onUserClick}/></col>
-                ))}
-            </row>
-        )
+
+        <Row>
+            {users.map(user => (
+                <Col key={user.id} md={6} lg={4} className="mb-4">
+                    <UserCard key = {user.id} user={user} onUserClick={onUserClick} />
+                </Col>
+            ))}
+        </Row>
+
+
+)
 
 
 }

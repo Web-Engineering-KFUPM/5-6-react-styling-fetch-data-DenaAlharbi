@@ -335,13 +335,12 @@ function App() {
             setLoading(true);
 
             try {
-                setLoading(true);
                 const response = await fetch('https://jsonplaceholder.typicode.com/users');
                 const data = await response.json();
                 setUsers(data)
                 setFilteredUsers(data)
             } catch (error) {
-                console.error(error);
+                setError(error.message);
             } finally {
                 setLoading(false);
             }
@@ -363,6 +362,17 @@ function App() {
         setSelectedUser(user)
         setShowModal(true)
     }
+    useEffect(() => {
+        if (!searchTerm) {
+            setFilteredUsers(users);
+        } else {
+            const filtered = users.filter(user =>
+                user.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        }
+    }, [searchTerm, users]);
+
 
     const handleCloseModal = () => {
         setSelectedUser(null)
@@ -382,7 +392,8 @@ function App() {
             </header>
 
             <Container className="py-3 mb-4 mt-5">
-                <SearchBar/>
+                <SearchBar onSearch={setSearchTerm} />
+
 
                 {loading && <Spinner animation={"border"}/>}
                 {error && <Alert variant={"danger"}>{error}</Alert>}
