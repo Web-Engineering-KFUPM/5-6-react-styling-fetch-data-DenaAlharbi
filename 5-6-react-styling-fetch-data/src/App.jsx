@@ -316,54 +316,92 @@ END OF LAB INSTRUCTIONS
 ===================================================================
 */
 
-import React, { useState, useEffect } from 'react'
-import { Container, Alert, Spinner } from 'react-bootstrap'
+import React, {useState, useEffect} from 'react'
+import {Container, Alert, Spinner} from 'react-bootstrap'
 import UserList from './components/UserList'
 import SearchBar from './components/SearchBar'
 import UserModal from './components/UserModal'
 
 function App() {
-  const [users, setUsers] = useState([])
+    const [selectedUser, setSelectedUser] = useState([null])
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    {/*API fetch logic*/}
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
 
-  }, [])
+            try {
+                setLoading(true);
+                const response = await fetch('https://jsonplaceholder.typicode.com/users');
+                const data = await response.json();
+                setUsers(data)
+                setFilteredUsers(data)
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  const handleUserClick = (user) => {
-  }
+        fetchData();
+    }, []);
 
-  const handleCloseModal = () => {
-  }
 
-  return (
-    <div className="app">
-      <header className="">
-        <Container>
-          <h1 className="">User Management Dashboard</h1>
-          <p className="">Manage and view user information</p>
-        </Container>
-      </header>
+    useEffect(() => {
+        if (!searchTerm) {
+            setFilteredUsers(users);
+        } else {
+            const filtered = users.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            setFilteredUsers(filtered);
+        }
+    }, [searchTerm, users]);
+    const handleUserClick = (user) => {
+        setSelectedUser(user)
+        setShowModal(true)
+    }
 
-      <Container className="">
-        <SearchBar />
+    const handleCloseModal = () => {
+        setSelectedUser(null)
+        setShowModal(false)
 
-        {/* {loading && <Spinner ... />} */}
-        {/* {error && <Alert ...>{error}</Alert>} */}
-        {/* <UserList users={filteredUsers} onUserClick={handleUserClick} /> */}
 
-        <UserModal />
-      </Container>
+    }
 
-      <footer className="">
-        <Container>
-          <p className="text-center text-muted mb-0">
-            &copy; 2024 User Management Dashboard
-          </p>
-        </Container>
-      </footer>
-    </div>
-  )
+    return (
+        <div className="app">
+            <header className="      bg-primary text-white py-3 mb-4 shadow
+">
+                <Container>
+                    <h1 className="mt-5">User Management Dashboard</h1>
+                    <p className="mt-5 py-3">Manage and view user information</p>
+                </Container>
+            </header>
+
+            <Container className="mt-5">
+                <SearchBar/>
+
+                {loading && <Spinner animation={"border"}/>}
+                {error && <Alert variant={"danger"}>{error}</Alert>}
+                <UserList users={filteredUsers} onUserClick={handleUserClick}/>
+                <UserModal show={showModal} user={selectedUser} onHide={handleCloseModal}/>
+
+                <UserModal/>
+            </Container>
+            <footer className="bg-light py-4">
+                <Container>
+                    <p className="text-center text-muted mb-0">
+                        &copy; 2024 User Management Dashboard
+                    </p>
+                </Container>
+            </footer>
+        </div>
+    )
 }
 
 export default App
