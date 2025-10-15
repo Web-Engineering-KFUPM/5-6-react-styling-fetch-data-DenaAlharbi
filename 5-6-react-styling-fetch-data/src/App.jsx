@@ -27,7 +27,6 @@ LAB SETUP INSTRUCTIONS
 
    If your system blocks running npm commands (especially on Windows PowerShell),
    run this command first to allow script execution:
-      Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 5. Link Bootstrap CSS to your React project:
    Open the file: public/index.html
@@ -62,7 +61,7 @@ TODO 1.2: Style the Header Section
       bg-primary text-white py-3 mb-4 shadow
    Inside header:
       <Container>
-         In h1 tag add propterties: h2 mb-0
+         In h1 tag add propterties: h2 mb-0n
          In p tag add propterties: mb-0 opacity-75
       </Container>
 
@@ -323,8 +322,7 @@ import SearchBar from './components/SearchBar'
 import UserModal from './components/UserModal'
 
 function App() {
-    const [selectedUser, setSelectedUser] = useState([null])
-    const [data, setData] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null)
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -374,16 +372,16 @@ function App() {
     }
 
     return (
-        <div className="app">
-            <header className="      bg-primary text-white py-3 mb-4 shadow
+        <div className="app  mb-4">
+            <header className="    py-3 mb-4 mt-5  bg-primary text-white py-3 mb-4 shadow
 ">
                 <Container>
-                    <h1 className="mt-5">User Management Dashboard</h1>
-                    <p className="mt-5 py-3">Manage and view user information</p>
+                    <h1 className=" h2 mb-0">User Management Dashboard</h1>
+                    <p className="mb-0 opacity-75">Manage and view user information</p>
                 </Container>
             </header>
 
-            <Container className="mt-5">
+            <Container className="py-3 mb-4 mt-5">
                 <SearchBar/>
 
                 {loading && <Spinner animation={"border"}/>}
@@ -391,9 +389,8 @@ function App() {
                 <UserList users={filteredUsers} onUserClick={handleUserClick}/>
                 <UserModal show={showModal} user={selectedUser} onHide={handleCloseModal}/>
 
-                <UserModal/>
             </Container>
-            <footer className=" bg-light py-4 mt-5">
+            <footer className=" py-3 mb-4 mt-5 bg-light py-4 mt-5">
                 <Container>
                     <p className="text-center text-muted mb-0">
                         &copy; 2024 User Management Dashboard

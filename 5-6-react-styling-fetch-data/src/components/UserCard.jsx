@@ -17,8 +17,7 @@ function UserCard({ user, onUserClick }) {
           <strong>Email:</strong> {user.email}<br />
           <strong>Phone:</strong> {user.phone}
         </Card.Text>
-      {/* Buttotn*/}
-          <Button onClick={() => onUserClick(user)}>view</Button>
+          <Button onClick={() => onUserClick(user)}>view details</Button>
       </Card.Body>
     </Card>
   )
